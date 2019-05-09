@@ -4,9 +4,9 @@ Declaro que o presente trabalho contém código desenvolvido exclusivamente por 
 
 (Preencha com seus dados)
 
-- Nome completo: 
-- Username do Bitbucket: 
-- Email @inf: 
+- Nome completo: Ari Vitor da Silva Lazzarotto
+- Username do Bitbucket: darkzx1fn0q
+- Email @inf: avdslazzarotto@inf.ufpel.edu.br
 
 
 ## Descrição 
