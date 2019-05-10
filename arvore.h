@@ -1,12 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifndef _ARVORE_H_
 #define _ARVORE_H_
 
 /* IMPLEMENTAÇÃO DE ÁRVORE BINÁRIA DE PESQUISA */
 
-struct nodo {
+typedef struct nodo {
 	int valor; 
 	struct nodo * dir, * esq;
-};
+}node;
 
 /* Inicializa uma árvore
  * @param entradas número de valores iniciais
