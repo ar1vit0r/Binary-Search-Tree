@@ -1,8 +1,7 @@
 #include "arvore.h"
 
 struct nodo * inicializa_arvore(int entradas, int * valores){
-    node *raiz,*temp1,*temp2;
-        int i;
+    node *raiz;
 
         if(entradas < 1 || valores == NULL)
             return NULL;
@@ -10,10 +9,13 @@ struct nodo * inicializa_arvore(int entradas, int * valores){
         if( ( raiz = malloc(sizeof(node))) == NULL )
             return NULL;
         raiz->valor = valores[0];
-        temp1 = raiz;
+        raiz->dir = NULL;
+        raiz->esq = NULL;
 
         if( entradas > 1){
-            for(i = 1; i < entradas; i++){
+            node *temp1,*temp2;
+            temp1 = raiz;
+            for(int i = 1; i < entradas; i++){
                 if( ( temp2 = malloc(sizeof(node))) == NULL )
                     return NULL;
 
@@ -34,7 +36,7 @@ return raiz;
 
 struct nodo * insere_nodo(struct nodo * raiz, int valor){
 
-        if( busca(raiz,valor) != NULL){
+        if( busca(raiz,valor) == NULL){
             node *temp;
 
             temp = raiz;
@@ -65,6 +67,44 @@ return NULL
 }
 
 struct nodo * remove_nodo(struct nodo * raiz, int valor){
+    node *temp,*aux;
+
+        if( (temp = busca(raiz,valor) ) != NULL){
+            if(temp->esq == NULL && temp->dir == NULL)
+                free(temp);
+            else{ 
+                if(temp->esq != NULL){
+                    aux = raiz;
+                    while (aux->valor > temp->esq->valor){
+                        if( temp->esq->valor < aux->valor)
+                            aux = aux->esq;
+                        else
+                            aux = aux->dir;
+                    }
+                aux->esq = temp->esq;
+
+                if( aux->esq->valor > temp->dir->valor)
+                    aux->esq->esq = temp->dir;
+                else
+                    aux->esq->dir = temp->dir;
+                free(temp);
+                }
+                if(temp->dir != NULL && temp->esq == NULL){
+                    aux = raiz;
+                    while (aux->valor < temp->dir->valor){
+                        if( temp->dir->valor > aux->valor)
+                            aux = aux->dir;
+                        else
+                            aux = aux->esq;
+                    }
+                aux->dir = temp->dir;
+                free(temp);
+                }
+            }
+        return raiz;
+        }
+return NULL
+}
 
 }
 
