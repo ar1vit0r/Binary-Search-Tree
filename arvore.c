@@ -40,13 +40,33 @@ struct nodo * insere_nodo(struct nodo * raiz, int valor){
             node *temp;
 
             temp = raiz;
-            while (temp != NULL){
-                if( valor < temp->valor)
-                    temp = temp->esq;
-                else
-                    temp = temp->dir;
+            while (temp->valor != valor){
+                if( valor < temp->valor){
+                    if( temp->esq == NULL){
+                        if( (temp->esq = malloc(sizeof(node)) ) == NULL )
+                            return NULL;
+                        temp = temp->esq;
+                        temp->valor = valor;
+                        temp->esq = NULL;
+                        temp->dir = NULL;
+                    }
+                    else
+                        temp = temp->esq;
+                }
+                else{
+                    if( temp->dir == NULL){
+                        if( (temp->dir = malloc(sizeof(node)) ) == NULL )
+                            return NULL;
+                        temp = temp->dir;
+                        temp->valor = valor;
+                        temp->esq = NULL;
+                        temp->dir = NULL;
+                    }
+                    else
+                        temp = temp->dir;
+                }
             }
-            
+            /**
             if( valor < temp->valor){
                 if( (temp->esq = malloc(sizeof(node)) ) == NULL )
                     return NULL;
@@ -61,6 +81,7 @@ struct nodo * insere_nodo(struct nodo * raiz, int valor){
                 temp->dir->esq = NULL;
                 temp->dir->dir = NULL;
             }
+            **/
         return raiz;
         }
 return NULL
@@ -141,9 +162,19 @@ int infix(struct nodo * raiz, int * resultado){
 }
 
 void imprime(int * valores, int tamanho){
-
+    int i;
+        for( i = 0; i < tamanho; i++){
+            printf("Valor %d: %d ",i+1,valores[i]);
+            if( i % 10 == 0)
+                printf("\n");
+        }
+return;
 }
 
 void remove_todos(struct nodo * raiz){
-
+        if( raiz != NULL){
+            while( raiz != NULL)
+                remove_nodo(raiz,raiz->valor);
+        }
+return;
 }
