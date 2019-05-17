@@ -74,7 +74,7 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
                 else{
                     if( raiz->dir != NULL && raiz->esq != NULL){ // dois filhos
                         // pode dar problema, no slide, pref é da direita...
-                        temp = busca_min(raiz->esq); // maior da esquerda ou menor da direita
+                        temp = busca_max(raiz->esq); // maior da esquerda ou menor da direita
                         raiz->valor = temp->valor;
                         raiz->esq = remove_nodo(raiz->esq,raiz->valor); 
                     }
@@ -95,7 +95,25 @@ return NULL;
 }
 
 int altura(struct nodo * raiz){
+    int i = 0;
 
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( raiz->esq != NULL ){
+                i++;
+                return altura(raiz->esq);
+            }
+            else{
+                if( raiz->dir != NULL){
+                    i++;
+                    return altura(raiz->dir);
+                }
+                else
+                    i++;
+            }
+        }
+return i;
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
@@ -118,12 +136,25 @@ struct nodo * busca_min(struct nodo * raiz){
     node *temp;
     int i;
 
-        for( i = 0; i <= 100; i++){
+        for( i = 0; i <= 50; i++){
             temp = busca(raiz,i);
             if( temp != NULL)
                 return temp;
         }
-printf("\n Não Encontrou um min entre 0 e 100. \n");
+printf("\n Não Encontrou um min entre 0 e 50. \n");
+return NULL;
+}
+
+struct nodo * busca_max(struct nodo * raiz){
+    node *temp;
+    int i;
+
+        for( i = 50; i > 0; i--){
+            temp = busca(raiz,i);
+            if( temp != NULL)
+                return temp;
+        }
+printf("\n Não Encontrou um max de 50 a 0. \n");
 return NULL;
 }
 
@@ -132,7 +163,20 @@ int balanceada(struct nodo * raiz){
 }
 
 int numero_elementos(struct nodo * raiz){
-
+    int i = 0;
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( raiz->esq != NULL )
+                return numero_elementos(raiz->esq);
+            else{
+                if( raiz->dir != NULL)
+                    return numero_elementos(raiz->dir);
+                else
+                    i++;
+            }
+        }
+return i;
 }
 
 int abrangencia(struct nodo * raiz, int * resultado){
@@ -140,22 +184,54 @@ int abrangencia(struct nodo * raiz, int * resultado){
 }
 
 int prefix(struct nodo * raiz, int * resultado){
+    int i = 0;
         if( raiz == NULL)
             return NULL;
         else{
-            if( )
-                
+            resultado[i] = raiz->valor;
+            i++;
+            if( raiz->esq != NULL )
+                return prefix(raiz->esq,resultado);
             else
-
+                return prefix(raiz->dir,resultado);
         }
-}
-
-int postfix(struct nodo * raiz, int * resultado){
-
+return i;
 }
 
 int infix(struct nodo * raiz, int * resultado){
+    int i = 0;
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( raiz->esq != NULL )
+                return infix(raiz->esq,resultado);
+            else{
+                resultado[i] = raiz->valor;
+                i++;
+                if( raiz->dir != NULL)
+                    return infix(raiz->dir,resultado);
+            }
+        }
+return i;
+}
 
+int postfix(struct nodo * raiz, int * resultado){
+    int i = 0;
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( raiz->esq != NULL )
+                return postfix(raiz->esq,resultado);
+            else{
+                if( raiz->dir != NULL)
+                    return postfix(raiz->dir,resultado);
+                else{
+                    resultado[i] = raiz->valor;
+                    i++;
+                }
+            }
+        }
+return i;
 }
 
 void imprime(int * valores, int tamanho){

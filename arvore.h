@@ -51,6 +51,12 @@ struct nodo * busca(struct nodo * raiz, int valor);
  */
 struct nodo * busca_min(struct nodo * raiz); 
 
+/* Busca a maior chave da árvore
+ * @param raiz raiz da árvore 
+ * @return ponteiro para nodo, ou NULL se inexistente
+ */
+struct nodo * busca_max(struct nodo * raiz); 
+
 /* Descobre se uma árvore está balanceada
  * @param raiz da árvore
  * @return diferença das alturas das subárvores
