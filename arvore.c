@@ -35,94 +35,61 @@ return raiz;
 }
 
 struct nodo * insere_nodo(struct nodo * raiz, int valor){
-
-        if( busca(raiz,valor) == NULL){
+        if( raiz == NULL){
             node *temp;
-
-            temp = raiz;
-            while (temp->valor != valor){
-                if( valor < temp->valor){
-                    if( temp->esq == NULL){
-                        if( (temp->esq = malloc(sizeof(node)) ) == NULL )
-                            return NULL;
-                        temp = temp->esq;
-                        temp->valor = valor;
-                        temp->esq = NULL;
-                        temp->dir = NULL;
-                    }
-                    else
-                        temp = temp->esq;
-                }
-                else{
-                    if( temp->dir == NULL){
-                        if( (temp->dir = malloc(sizeof(node)) ) == NULL )
-                            return NULL;
-                        temp = temp->dir;
-                        temp->valor = valor;
-                        temp->esq = NULL;
-                        temp->dir = NULL;
-                    }
-                    else
-                        temp = temp->dir;
-                }
-            }
-            /**
-            if( valor < temp->valor){
-                if( (temp->esq = malloc(sizeof(node)) ) == NULL )
+                if( ( temp = malloc(sizeof(node))) == NULL)
                     return NULL;
-                temp->esq->valor = valor;
-                temp->esq->esq = NULL;
-                temp->esq->dir = NULL;
+                temp->valor = valor;
+                temp->dir = NULL;
+                temp->esq = NULL;
+            return temp;
+        }
+        else{
+            if( raiz->valor > valor){
+                raiz->esq = insere_nodo(raiz->esq,valor);
+                return raiz;
             }
             else{
-                if( (temp->dir = malloc(sizeof(node)) ) == NULL )
-                    return NULL;
-                temp->dir->valor = valor;
-                temp->dir->esq = NULL;
-                temp->dir->dir = NULL;
+                if( raiz->valor < valor){
+                    raiz->dir = insere_nodo(raiz->dir,valor); // se der ruim, tentar com raiz->esq
+                    return raiz;
+                }
+                else
+                    return raiz;
             }
-            **/
-        return raiz;
         }
-return NULL
+return NULL;
 }
 
 struct nodo * remove_nodo(struct nodo * raiz, int valor){
-    node *temp,*aux;
-
-        if( (temp = busca(raiz,valor) ) != NULL){
-            if(temp->esq == NULL && temp->dir == NULL)
-                free(temp);
-            else{ 
-                if(temp->esq != NULL){
-                    aux = raiz;
-                    while (aux->valor > temp->esq->valor){
-                        if( temp->esq->valor < aux->valor)
-                            aux = aux->esq;
-                        else
-                            aux = aux->dir;
+    node *temp;
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( raiz->valor > valor)
+                raiz->esq = remove_nodo(raiz->esq,valor);
+            else{
+                if( raiz->valor < valor)
+                    raiz->dir = remove_nodo(raiz->dir,valor);
+                else{
+                    if( raiz->dir != NULL && raiz->esq != NULL){ // dois filhos
+                        // pode dar problema, no slide, pref é da direita...
+                        temp = busca_min(raiz->esq); 
+                        raiz->valor = temp->valor;
+                        raiz->esq = remove_nodo(raiz->esq,raiz->valor); 
                     }
-                aux->esq = temp->esq;
-
-                if( aux->esq->valor > temp->dir->valor)
-                    aux->esq->esq = temp->dir;
-                else
-                    aux->esq->dir = temp->dir;
-                free(temp);
-                }
-                if(temp->dir != NULL && temp->esq == NULL){
-                    aux = raiz;
-                    while (aux->valor < temp->dir->valor){
-                        if( temp->dir->valor > aux->valor)
-                            aux = aux->dir;
+                    else{
+                        if( raiz->dir == NULL)
+                            temp = raiz->esq;
                         else
-                            aux = aux->esq;
+                            temp = raiz->dir;
+
+                        free(raiz);
+                        return temp;
                     }
-                aux->dir = temp->dir;
-                free(temp);
                 }
             }
-        return raiz;
+            
         }
 return NULL
 }
@@ -134,7 +101,32 @@ int altura(struct nodo * raiz){
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( raiz->valor == valor )
+                return raiz;
+            else{
+                if( raiz->valor > valor)
+                    return busca(raiz->esq,valor);
+                else
+                    return busca(raiz->dir,valor);
+            }
+        }
+return NULL;
+}
 
+struct nodo * busca_min(struct nodo * raiz){
+    node *temp;
+    int i;
+
+        for( i = 0; i <= 100; i++){
+            temp = busca(raiz,i);
+            if( temp != NULL)
+                return temp;
+        }
+printf("\n Não Encontrou um min entre 0 e 100. \n");
+return NULL;
 }
 
 int balanceada(struct nodo * raiz){
@@ -164,7 +156,7 @@ int infix(struct nodo * raiz, int * resultado){
 void imprime(int * valores, int tamanho){
     int i;
         for( i = 0; i < tamanho; i++){
-            printf("Valor %d: %d ",i+1,valores[i]);
+            printf("\n Valor %d: %d ",i+1,valores[i]);
             if( i % 10 == 0)
                 printf("\n");
         }
