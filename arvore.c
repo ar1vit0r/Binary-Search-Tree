@@ -95,7 +95,7 @@ return NULL;
 }
 
 int altura(struct nodo * raiz){
-    int i = 0;
+    int i,j = 0;
 
         if( raiz == NULL)
             return NULL;
@@ -106,14 +106,15 @@ int altura(struct nodo * raiz){
             }
             else{
                 if( raiz->dir != NULL){
-                    i++;
+                    j++;
                     return altura(raiz->dir);
                 }
-                else
-                    i++;
             }
         }
-return i;
+if(i > j)
+    return i;
+else
+    return j;
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
