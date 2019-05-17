@@ -18,5 +18,5 @@ grade: test
 
 
 clean:
-	rm -rf *.o test test.dSYM
+	rm -rf *.o test
 
