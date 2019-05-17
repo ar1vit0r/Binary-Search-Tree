@@ -91,9 +91,7 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
             }
             
         }
-return NULL
-}
-
+return NULL;
 }
 
 int altura(struct nodo * raiz){
