@@ -74,7 +74,7 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
                 else{
                     if( raiz->dir != NULL && raiz->esq != NULL){ // dois filhos
                         // pode dar problema, no slide, pref é da direita...
-                        temp = busca_min(raiz->esq); 
+                        temp = busca_min(raiz->esq); // maior da esquerda ou menor da direita
                         raiz->valor = temp->valor;
                         raiz->esq = remove_nodo(raiz->esq,raiz->valor); 
                     }
@@ -140,7 +140,14 @@ int abrangencia(struct nodo * raiz, int * resultado){
 }
 
 int prefix(struct nodo * raiz, int * resultado){
+        if( raiz == NULL)
+            return NULL;
+        else{
+            if( )
+                
+            else
 
+        }
 }
 
 int postfix(struct nodo * raiz, int * resultado){
