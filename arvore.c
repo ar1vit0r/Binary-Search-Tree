@@ -73,7 +73,6 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
                     raiz->dir = remove_nodo(raiz->dir,valor);
                 else{
                     if( raiz->dir != NULL && raiz->esq != NULL){ // dois filhos
-                        // pode dar problema, no slide, pref é da direita...
                         temp = busca_max(raiz->esq); // maior da esquerda ou menor da direita
                         raiz->valor = temp->valor;
                         raiz->esq = remove_nodo(raiz->esq,raiz->valor); 
@@ -95,26 +94,22 @@ return NULL;
 }
 
 int altura(struct nodo * raiz){
-    int i,j = 0;
+    int i = 0;
 
         if( raiz == NULL)
-            return NULL;
+            return 0;
         else{
+            i++
             if( raiz->esq != NULL ){
                 i++;
                 return altura(raiz->esq);
             }
-            else{
-                if( raiz->dir != NULL){
-                    j++;
-                    return altura(raiz->dir);
-                }
+            if( raiz->dir != NULL){
+                i++;
+                return altura(raiz->dir);
             }
         }
-if(i > j)
-    return i;
-else
-    return j;
+return i;
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
@@ -142,7 +137,7 @@ struct nodo * busca_min(struct nodo * raiz){
             if( temp != NULL)
                 return temp;
         }
-printf("\n Não Encontrou um min entre 0 e 50. \n");
+    printf("\n Não Encontrou um min entre 0 e 50. \n");
 return NULL;
 }
 
@@ -155,12 +150,30 @@ struct nodo * busca_max(struct nodo * raiz){
             if( temp != NULL)
                 return temp;
         }
-printf("\n Não Encontrou um max de 50 a 0. \n");
+    printf("\n Não Encontrou um max de 50 a 0. \n");
 return NULL;
 }
 
 int balanceada(struct nodo * raiz){
-
+    int balanceada = 0;
+        if( raiz == NULL)
+            return 1;
+        else{
+            if( raiz->dir != NULL){
+                if( raiz->dir->valor > raiz->valor)
+                    balanceada++;
+                return balanceada(raiz->dir);
+            }
+            if( raiz->esq != NULL){
+                if( raiz->esq->valor < raiz->valor)
+                    balanceada++;
+                return balanceada(raiz->dir);
+             }
+        }
+    if( balanceada != numero_elementos(raiz))
+        return numero_elementos(raiz) - balanceada;
+    else
+        return 0;
 }
 
 int numero_elementos(struct nodo * raiz){
@@ -168,13 +181,14 @@ int numero_elementos(struct nodo * raiz){
         if( raiz == NULL)
             return NULL;
         else{
-            if( raiz->esq != NULL )
+            i++;
+            if( raiz->esq != NULL ){
+                i++;
                 return numero_elementos(raiz->esq);
-            else{
-                if( raiz->dir != NULL)
-                    return numero_elementos(raiz->dir);
-                else
-                    i++;
+            }
+            if( raiz->dir != NULL){
+                i++
+                return numero_elementos(raiz->dir);
             }
         }
 return i;
