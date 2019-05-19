@@ -94,22 +94,17 @@ return NULL;
 }
 
 int altura(struct nodo * raiz){
-    int i = 0;
-
-        if( raiz == NULL)
-            return 0;
+        if (raiz == NULL) 
+            return -1; // altura da árvore vazia
         else{
-            i++
-            if( raiz->esq != NULL ){
-                i++;
-                return altura(raiz->esq);
-            }
-            if( raiz->dir != NULL){
-                i++;
-                return altura(raiz->dir);
-            }
-        }
-return i;
+            int ae = altura (raiz->esq);
+            int ad = altura (raiz->dir);
+            if(ae < ad) 
+                return ad + 1;
+            else 
+                return ae + 1;
+   }
+return -1;
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
@@ -155,23 +150,23 @@ return NULL;
 }
 
 int balanceada(struct nodo * raiz){
-    int balanceada = 0;
+    int count = 0;
         if( raiz == NULL)
-            return 1;
+            return -1;
         else{
             if( raiz->dir != NULL){
                 if( raiz->dir->valor > raiz->valor)
-                    balanceada++;
+                    count++;
                 return balanceada(raiz->dir);
             }
             if( raiz->esq != NULL){
                 if( raiz->esq->valor < raiz->valor)
-                    balanceada++;
+                    count++;
                 return balanceada(raiz->dir);
              }
         }
-    if( balanceada != numero_elementos(raiz))
-        return numero_elementos(raiz) - balanceada;
+    if( count != numero_elementos(raiz))
+        return numero_elementos(raiz) - count;
     else
         return 0;
 }
@@ -179,7 +174,7 @@ int balanceada(struct nodo * raiz){
 int numero_elementos(struct nodo * raiz){
     int i = 0;
         if( raiz == NULL)
-            return NULL;
+            return 0;
         else{
             i++;
             if( raiz->esq != NULL ){
@@ -187,7 +182,7 @@ int numero_elementos(struct nodo * raiz){
                 return numero_elementos(raiz->esq);
             }
             if( raiz->dir != NULL){
-                i++
+                i++;
                 return numero_elementos(raiz->dir);
             }
         }
@@ -195,13 +190,14 @@ return i;
 }
 
 int abrangencia(struct nodo * raiz, int * resultado){
-
+    resultado[0] = raiz->valor;
+return 0;
 }
 
 int prefix(struct nodo * raiz, int * resultado){
     int i = 0;
         if( raiz == NULL)
-            return NULL;
+            return -1;
         else{
             resultado[i] = raiz->valor;
             i++;
@@ -215,17 +211,12 @@ return i;
 
 int infix(struct nodo * raiz, int * resultado){
     int i = 0;
-        if( raiz == NULL)
-            return NULL;
-        else{
-            if( raiz->esq != NULL )
-                return infix(raiz->esq,resultado);
-            else{
-                resultado[i] = raiz->valor;
-                i++;
-                if( raiz->dir != NULL)
-                    return infix(raiz->dir,resultado);
-            }
+        if( raiz != NULL){
+            infix(raiz->esq,resultado); 
+            printf("%d\n", raiz->valor);
+            resultado[i] = raiz->valor;
+            i++;
+            infix(raiz->dir,resultado);
         }
 return i;
 }
@@ -233,7 +224,7 @@ return i;
 int postfix(struct nodo * raiz, int * resultado){
     int i = 0;
         if( raiz == NULL)
-            return NULL;
+            return -1;
         else{
             if( raiz->esq != NULL )
                 return postfix(raiz->esq,resultado);
@@ -245,24 +236,34 @@ int postfix(struct nodo * raiz, int * resultado){
                     i++;
                 }
             }
+        return i;
         }
-return i;
+return -1;
 }
 
 void imprime(int * valores, int tamanho){
-    int i;
+    int i,n;
+        printf("\n");
         for( i = 0; i < tamanho; i++){
-            printf("\n Valor %d: %d ",i+1,valores[i]);
-            if( i % 10 == 0)
+            n++;
+            printf("%d ",valores[i]);
+            if( n == 10){
+                n = 0;
                 printf("\n");
+            }
         }
+        printf("\n");
 return;
 }
 
 void remove_todos(struct nodo * raiz){
-        if( raiz != NULL){
-            while( raiz != NULL)
-                remove_nodo(raiz,raiz->valor);
-        }
+    if( raiz != NULL){
+        int *caminhamento;
+            if( (caminhamento = malloc(numero_elementos(raiz) * sizeof(int))) == NULL)
+                return;
+            infix(raiz,caminhamento);
+            for( int i = 0; i < numero_elementos(raiz); i++)
+                remove_nodo(raiz,caminhamento[i]);
+    }
 return;
 }
