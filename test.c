@@ -40,8 +40,8 @@ void test_3_elementos(){
 	THEN("Altura deve ser dois");
 
 	raiz = inicializa_arvore(3, balanceada);
-	infix(raiz, caminhamento);
 	COMMENT("infix");
+	infix(raiz, caminhamento);
 	imprime(caminhamento, 3);
 	isNotNull(raiz, 1);
 	if (raiz){
@@ -102,8 +102,8 @@ void test_15_elementos(){
 			THEN("Percorrer em abrangencia deve funcionar");
 			for(i=0; i<15;i++)
 				caminhamento[i] = 0;
-			abrangencia(nova_raiz, caminhamento);
 			COMMENT("abrangência");
+			abrangencia(nova_raiz, caminhamento);
 			imprime(caminhamento, 15);
 			for(i=0; (i<14) && (balanceada[i]==caminhamento[i]); i++);
 			if (caminhamento[14]==0)
@@ -125,8 +125,8 @@ void test_15_elementos(){
 	raiz = inicializa_arvore(15, balanceada);
 	if (raiz){
 		raiz = remove_nodo(raiz, 50);
-		infix(raiz, caminhamento);
 		COMMENT("infix");
+		infix(raiz, caminhamento);
 		imprime(caminhamento, 15);
 		abrangencia(raiz, caminhamento);
 		COMMENT("abrangência");
@@ -159,8 +159,8 @@ void test_7_elementos_linear(){
 
 
 	raiz = inicializa_arvore(7, naobalanceada);
-	abrangencia(raiz, caminhamento);
 	COMMENT("abrangência");
+	abrangencia(raiz, caminhamento);
 	imprime(caminhamento, 7);
 	isNotNull(raiz, 1);
 	if (raiz){
@@ -187,8 +187,8 @@ void test_7_elementos_linear(){
 			THEN("Percorrer em abrangencia deve funcionar");
 			for(i=0; i<7;i++)
 				caminhamento[i] = 0;
-			abrangencia(nova_raiz, caminhamento);
 			COMMENT("abrangência");
+			abrangencia(nova_raiz, caminhamento);
 			imprime(caminhamento, 7);
 			for(i=0; (i<6) && (esperado[i]==caminhamento[i]); i++);
 			if (caminhamento[6]==0)
@@ -207,11 +207,11 @@ void test_7_elementos_linear(){
 	raiz = inicializa_arvore(7, naobalanceada);
 	if (raiz){
 		raiz = remove_nodo(raiz, 1);
-		infix(raiz, caminhamento);
 		COMMENT("infix");
+		infix(raiz, caminhamento);
 		imprime(caminhamento, 6);
-		abrangencia(raiz, caminhamento);
 		COMMENT("abrangência");
+		abrangencia(raiz, caminhamento);
 		imprime(caminhamento, 6);
 
 		if(raiz){
