@@ -1,37 +1,16 @@
 #include "arvore.h"
 
 struct nodo * inicializa_arvore(int entradas, int * valores){
-    node *raiz;
-
+    node *raiz = NULL;
         if(entradas < 1 || valores == NULL)
             return NULL;
-
-        if( ( raiz = malloc(sizeof(node))) == NULL )
-            return NULL;
-        raiz->valor = valores[0];
-        raiz->dir = NULL;
-        raiz->esq = NULL;
-
-        if( entradas > 1){
-            node *temp1,*temp2;
-            temp1 = raiz;
-            for(int i = 1; i < entradas; i++){
-                if( ( temp2 = malloc(sizeof(node))) == NULL )
-                    return NULL;
-
-                temp2->valor = valores[i];
-                temp2->esq = NULL;
-                temp2->dir = NULL;
-
-                if( temp2->valor > temp1->valor)
-                    temp1->dir = temp2;
-                else
-                    temp1->esq = temp2;
-
-                temp1 = temp2;
-            }
+        else{
+            raiz = insere_nodo(raiz,valores[0]);
+            for( int i = 1; i < entradas; i++)
+                insere_nodo(raiz,valores[i]);
+	    return raiz;
         }
-return raiz;
+return NULL;
 }
 
 struct nodo * insere_nodo(struct nodo * raiz, int valor){
@@ -94,17 +73,17 @@ return NULL;
 }
 
 int altura(struct nodo * raiz){
+    int ae,ad;
         if (raiz == NULL) 
-            return -1; // altura da árvore vazia
+            return 0;
         else{
-            int ae = altura (raiz->esq);
-            int ad = altura (raiz->dir);
+            ae = altura(raiz->esq);
+            ad = altura(raiz->dir);
             if(ae < ad) 
                 return ad + 1;
             else 
                 return ae + 1;
    }
-return -1;
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
@@ -124,51 +103,34 @@ return NULL;
 }
 
 struct nodo * busca_min(struct nodo * raiz){
-    node *temp;
-    int i;
-
-        for( i = 0; i <= 50; i++){
-            temp = busca(raiz,i);
-            if( temp != NULL)
-                return temp;
-        }
-    printf("\n Não Encontrou um min entre 0 e 50. \n");
+    if( raiz != NULL){
+        if( raiz->esq != NULL)
+            return busca_min(raiz->esq);
+        else
+            return raiz;
+    }
 return NULL;
 }
 
 struct nodo * busca_max(struct nodo * raiz){
-    node *temp;
-    int i;
-
-        for( i = 50; i > 0; i--){
-            temp = busca(raiz,i);
-            if( temp != NULL)
-                return temp;
-        }
-    printf("\n Não Encontrou um max de 50 a 0. \n");
+    if( raiz != NULL){
+        if( raiz->dir != NULL)
+            return busca_max(raiz->dir);
+        else
+            return raiz;
+    }
 return NULL;
 }
 
 int balanceada(struct nodo * raiz){
-    int count = 0;
+    int e,d;
         if( raiz == NULL)
-            return -1;
+            return 0;
         else{
-            if( raiz->dir != NULL){
-                if( raiz->dir->valor > raiz->valor)
-                    count++;
-                return balanceada(raiz->dir);
-            }
-            if( raiz->esq != NULL){
-                if( raiz->esq->valor < raiz->valor)
-                    count++;
-                return balanceada(raiz->dir);
-             }
+            e = numero_elementos(raiz->esq);
+            d = numero_elementos(raiz->dir);
+            return e-d;
         }
-    if( count != numero_elementos(raiz))
-        return numero_elementos(raiz) - count;
-    else
-        return 0;
 }
 
 int numero_elementos(struct nodo * raiz){
@@ -177,34 +139,51 @@ int numero_elementos(struct nodo * raiz){
             return 0;
         else{
             i++;
-            if( raiz->esq != NULL ){
-                i++;
-                return numero_elementos(raiz->esq);
-            }
-            if( raiz->dir != NULL){
-                i++;
-                return numero_elementos(raiz->dir);
-            }
+            i+=numero_elementos(raiz->esq);
+            i+=numero_elementos(raiz->dir);
         }
 return i;
 }
 
-int abrangencia(struct nodo * raiz, int * resultado){
-    resultado[0] = raiz->valor;
-return 0;
+int abrangencia(struct nodo * raiz, int * resultado){ 
+    int i = 0;
+        if( raiz != NULL){
+            resultado[i] = raiz->valor;
+            i++;
+            i+=prefix(raiz->esq,resultado); 
+            i+=prefix(raiz->dir,resultado);
+        }
+return i;
 }
+/* 
+int i = 0;
+    struct fila *f;
+        f = create();
+        if( raiz != NULL){
+            enqueue(f,raiz->valor);
+            while( !vazia(f)){
+                resultado[i] = dequeue(f);
+                i++;
+                if( raiz->esq != NULL){
+                    node *temp = raiz->esq;
+                    enqueue(f,temp->valor);
+                }
+                if( raiz->dir != NULL){
+                    node *temp = raiz->dir;
+                    enqueue(f,temp->valor);
+                }
+            }
+        }
+return i;
+*/
 
 int prefix(struct nodo * raiz, int * resultado){
     int i = 0;
-        if( raiz == NULL)
-            return -1;
-        else{
+        if( raiz != NULL){
             resultado[i] = raiz->valor;
             i++;
-            if( raiz->esq != NULL )
-                return prefix(raiz->esq,resultado);
-            else
-                return prefix(raiz->dir,resultado);
+            i+=prefix(raiz->esq,resultado); 
+            i+=prefix(raiz->dir,resultado);
         }
 return i;
 }
@@ -212,44 +191,36 @@ return i;
 int infix(struct nodo * raiz, int * resultado){
     int i = 0;
         if( raiz != NULL){
-            infix(raiz->esq,resultado); 
-            printf("%d\n", raiz->valor);
+            i+=infix(raiz->esq,resultado); 
             resultado[i] = raiz->valor;
             i++;
-            infix(raiz->dir,resultado);
+            i+=infix(raiz->dir,resultado);
         }
 return i;
 }
 
 int postfix(struct nodo * raiz, int * resultado){
     int i = 0;
-        if( raiz == NULL)
-            return -1;
-        else{
-            if( raiz->esq != NULL )
-                return postfix(raiz->esq,resultado);
-            else{
-                if( raiz->dir != NULL)
-                    return postfix(raiz->dir,resultado);
-                else{
-                    resultado[i] = raiz->valor;
-                    i++;
-                }
-            }
-        return i;
+        if( raiz != NULL){
+            i+=postfix(raiz->esq,resultado); 
+            i+=postfix(raiz->dir,resultado);
+            resultado[i] = raiz->valor;
+            i++;
         }
-return -1;
+return i;
 }
 
 void imprime(int * valores, int tamanho){
     int i,n;
-        printf("\n");
+        n = 0;
+        printf("        "); // ficar bonito...
         for( i = 0; i < tamanho; i++){
             n++;
             printf("%d ",valores[i]);
             if( n == 10){
                 n = 0;
                 printf("\n");
+                printf("        "); // tb
             }
         }
         printf("\n");
@@ -258,12 +229,15 @@ return;
 
 void remove_todos(struct nodo * raiz){
     if( raiz != NULL){
-        int *caminhamento;
-            if( (caminhamento = malloc(numero_elementos(raiz) * sizeof(int))) == NULL)
-                return;
-            infix(raiz,caminhamento);
-            for( int i = 0; i < numero_elementos(raiz); i++)
-                remove_nodo(raiz,caminhamento[i]);
+        remove_todos(raiz->esq);
+        remove_todos(raiz->dir);
+        free(raiz);
     }
 return;
 }
+
+
+
+
+
+
