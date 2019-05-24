@@ -3,14 +3,12 @@
 struct nodo * inicializa_arvore(int entradas, int * valores){
         if(entradas < 1 || valores == NULL)
             return NULL;
-        else{
-            node *raiz = NULL;
-                raiz = insere_nodo(raiz,valores[0]);
-                for( int i = 1; i < entradas; i++)
-                    insere_nodo(raiz,valores[i]);
-	        return raiz;
-        }
-return NULL;
+        
+        node *raiz = NULL;
+            raiz = insere_nodo(raiz,valores[0]);
+            for( int i = 1; i < entradas; i++)
+                insere_nodo(raiz,valores[i]);
+	    return raiz;
 }
 
 struct nodo * insere_nodo(struct nodo * raiz, int valor){
@@ -30,7 +28,7 @@ struct nodo * insere_nodo(struct nodo * raiz, int valor){
             }
             else{
                 if( raiz->valor < valor){
-                    raiz->dir = insere_nodo(raiz->dir,valor); 
+                    raiz->dir = insere_nodo(raiz->dir,valor);
                     return raiz;
                 }
                 else
@@ -54,21 +52,20 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
 
                     if( raiz->dir != NULL && raiz->esq != NULL){ // dois filhos
                         temp = busca_min(raiz->dir); // maior da esquerda ou menor da direita
-                        raiz->valor = temp->valor;
-                        raiz->dir = remove_nodo(raiz->dir,raiz->valor); 
+                        raiz->valor = temp->valor;   // novo pai
+                        raiz->dir = remove_nodo(raiz->dir,raiz->valor); //remove pra n ficar 2 chaves iguais
                     }
                     else{
                         if( raiz->dir == NULL)
                             temp = raiz->esq;
                         else
                             temp = raiz->dir;
-                    
+
                         free(raiz);
                         return temp;
                     }
                 }
             }
-            
         }
 return NULL;
 }
@@ -84,7 +81,7 @@ int altura(struct nodo * raiz){
                 return ad + 1;
             else 
                 return ae + 1;
-   }
+        }
 }
 
 struct nodo * busca(struct nodo * raiz, int valor){
@@ -130,31 +127,27 @@ int balanceada(struct nodo * raiz){
         else{
             e = numero_elementos(raiz->esq);
             d = numero_elementos(raiz->dir);
-            return e-d;
         }
+return e-d;
 }
 
 int numero_elementos(struct nodo * raiz){
-    int i = 0;
-        if( raiz == NULL)
+    int e,d;
+        if (raiz == NULL){
             return 0;
-        else{
-            i++;
-            i+=numero_elementos(raiz->esq);
-            i+=numero_elementos(raiz->dir);
         }
-return i;
+        else{
+            e = numero_elementos(raiz->esq);
+            d = numero_elementos(raiz->dir);
+        }
+return e+d+1;
 }
 
 int abrangencia(struct nodo * raiz, int * resultado){ 
+    int *count;
     int i = 0;
-        if( raiz != NULL){
-            resultado[i] = raiz->valor;
-            i++;
-            i+=prefix(raiz->esq,resultado); 
-            i+=prefix(raiz->dir,resultado);
-        }
-return i;
+        count = &i;
+return prefix_count(raiz,resultado,count);
 }
 /* 
 int i = 0;
@@ -164,6 +157,7 @@ int i = 0;
             enqueue(f,raiz->valor);
             while( !vazia(f)){
                 resultado[i] = dequeue(f);
+                printf(" %d\n",resultado[i]);
                 i++;
                 if( raiz->esq != NULL){
                     node *temp = raiz->esq;
@@ -175,53 +169,73 @@ int i = 0;
                 }
             }
         }
-return i;
+return numero_elementos(raiz);
 */
 
 int prefix(struct nodo * raiz, int * resultado){
+    int *count;
     int i = 0;
-        if( raiz != NULL){
-            resultado[i] = raiz->valor;
-            i++;
-            i+=prefix(raiz->esq,resultado); 
-            i+=prefix(raiz->dir,resultado);
-        }
-return i;
+        count = &i;
+return prefix_count(raiz,resultado,count);
+}
+
+int prefix_count(struct nodo * raiz, int *resultado, int * count){
+    if(raiz != NULL){
+        resultado[*count] = raiz->valor;
+        (*count)++;
+        prefix_count(raiz->esq, resultado, count);
+        prefix_count(raiz->dir, resultado, count);
+    }
+return numero_elementos(raiz);
 }
 
 int infix(struct nodo * raiz, int * resultado){
+    int *count;
     int i = 0;
-        if( raiz != NULL){
-            i+=infix(raiz->esq,resultado); 
-            resultado[i] = raiz->valor;
-            i++;
-            i+=infix(raiz->dir,resultado);
-        }
-return i;
+        count = &i;
+return infix_count(raiz,resultado,count);
+}
+
+int infix_count(struct nodo * raiz, int *resultado, int * count){
+    if(raiz != NULL){
+        infix_count(raiz->esq, resultado, count);
+        resultado[*count] = raiz->valor;
+        (*count)++;
+        infix_count(raiz->dir, resultado, count);
+    }
+return numero_elementos(raiz);
 }
 
 int postfix(struct nodo * raiz, int * resultado){
+    int *count;
     int i = 0;
-        if( raiz != NULL){
-            i+=postfix(raiz->esq,resultado); 
-            i+=postfix(raiz->dir,resultado);
-            resultado[i] = raiz->valor;
-            i++;
-        }
-return i;
+        count = &i;
+return postfix_count(raiz,resultado,count);
+}
+
+int postfix_count(struct nodo * raiz, int *resultado, int * count){
+    if(raiz != NULL){
+        postfix_count(raiz->esq, resultado, count);
+        postfix_count(raiz->dir, resultado, count);
+        resultado[*count] = raiz->valor;
+        (*count)++;
+    }
+return numero_elementos(raiz);
 }
 
 void imprime(int * valores, int tamanho){
     int i,n;
         n = 0;
-        printf("        "); // ficar bonito...
+        if( tamanho < 1 || valores == NULL)
+            return;
+        printf("            "); // ficar bonito...
         for( i = 0; i < tamanho; i++){
             n++;
             printf("%d ",valores[i]);
             if( n == 10){
                 n = 0;
                 printf("\n");
-                printf("        "); // tb
+                printf("            "); // tb
             }
         }
         printf("\n");

@@ -77,26 +77,50 @@ int numero_elementos(struct nodo * raiz);
  */
 int abrangencia(struct nodo * raiz, int * resultado);
 
-/* Percorre a árvore de forma pré-fixada 
+/* Passa os parãmetros pro interno por causa do contador 
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
  */
 int prefix(struct nodo * raiz, int * resultado);
 
-/* Percorre a árvore de forma pós-fixada 
+/* Percorre a árvore de forma pré-fixada 
+ * @param raiz raiz da árvore
+ * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
+ * @param count contador do vetor
+ * @return número atual de elementos no vetor
+ */
+int prefix_count(struct nodo * raiz, int *resultado, int * count);
+
+/* Passa os parãmetros pro interno por causa do contador 
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
  */
 int postfix(struct nodo * raiz, int * resultado);
 
-/* Percorre a árvore de forma infix 
+/* Percorre a árvore de forma pós-fixada 
+ * @param raiz raiz da árvore
+ * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
+ * @param count contador do vetor
+ * @return número atual de elementos no vetor
+ */
+int postfix_count(struct nodo * raiz, int *resultado, int * count);
+
+/* Passa os parãmetros pro interno por causa do contador
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
  */
 int infix(struct nodo * raiz, int * resultado);
+
+/* Percorre a árvore de forma infix 
+ * @param raiz raiz da árvore
+ * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
+ * @param count contador do vetor
+ * @return número atual de elementos no vetor
+ */
+int infix_count(struct nodo * raiz, int *resultado, int * count);
 
 /* Imprime na stdio os valores de um caminhamento com um espaço entre cada valor, 
  * máximo de 10 valores por linha
