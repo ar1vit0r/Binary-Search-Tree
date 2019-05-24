@@ -64,7 +64,6 @@ struct nodo * busca_max(struct nodo * raiz);
  */
 int balanceada(struct nodo * raiz);
 
-
 /* Número de elementos em uma árvore 
  * @param raiz raiz da árvore
  * @return número de elementos da árvore 

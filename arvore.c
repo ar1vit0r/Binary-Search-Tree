@@ -1,14 +1,14 @@
 #include "arvore.h"
 
 struct nodo * inicializa_arvore(int entradas, int * valores){
-    node *raiz = NULL;
         if(entradas < 1 || valores == NULL)
             return NULL;
         else{
-            raiz = insere_nodo(raiz,valores[0]);
-            for( int i = 1; i < entradas; i++)
-                insere_nodo(raiz,valores[i]);
-	    return raiz;
+            node *raiz = NULL;
+                raiz = insere_nodo(raiz,valores[0]);
+                for( int i = 1; i < entradas; i++)
+                    insere_nodo(raiz,valores[i]);
+	        return raiz;
         }
 return NULL;
 }
@@ -30,7 +30,7 @@ struct nodo * insere_nodo(struct nodo * raiz, int valor){
             }
             else{
                 if( raiz->valor < valor){
-                    raiz->dir = insere_nodo(raiz->dir,valor); // se der ruim, tentar com raiz->esq
+                    raiz->dir = insere_nodo(raiz->dir,valor); 
                     return raiz;
                 }
                 else
@@ -41,7 +41,6 @@ return NULL;
 }
 
 struct nodo * remove_nodo(struct nodo * raiz, int valor){
-    node *temp;
         if( raiz == NULL)
             return NULL;
         else{
@@ -51,17 +50,19 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
                 if( raiz->valor < valor)
                     raiz->dir = remove_nodo(raiz->dir,valor);
                 else{
+                    node *temp;
+
                     if( raiz->dir != NULL && raiz->esq != NULL){ // dois filhos
-                        temp = busca_max(raiz->esq); // maior da esquerda ou menor da direita
+                        temp = busca_min(raiz->dir); // maior da esquerda ou menor da direita
                         raiz->valor = temp->valor;
-                        raiz->esq = remove_nodo(raiz->esq,raiz->valor); 
+                        raiz->dir = remove_nodo(raiz->dir,raiz->valor); 
                     }
                     else{
                         if( raiz->dir == NULL)
                             temp = raiz->esq;
                         else
                             temp = raiz->dir;
-
+                    
                         free(raiz);
                         return temp;
                     }
