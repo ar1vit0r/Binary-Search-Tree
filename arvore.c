@@ -149,7 +149,7 @@ int abrangencia(struct nodo * raiz, int * resultado){
         count = &i;
 return prefix_count(raiz,resultado,count);
 }
-/* 
+/* 1º algoritmo
 int i = 0;
     struct fila *f;
         f = create();
@@ -170,6 +170,58 @@ int i = 0;
             }
         }
 return numero_elementos(raiz);
+*/
+/* 2º algoritmo (by Kevin)
+arvore** arvoreSimetrica(arvore *raiz, int quantidadeElementos)
+{
+    int altura=2, filaTamanho=2, aux, i=0, j=0, k=1;
+    arvore **vetor, **filaNodos, **filaNodos_aux;
+    filaNodos = malloc(filaTamanho*sizeof(arvore*));
+    filaNodos[0] = raiz->pEsq;
+    filaNodos[1] = raiz->pDir;
+    vetor = malloc(quantidadeElementos*sizeof(arvore*));
+    vetor[0] = raiz;
+    for (i=0; i<filaTamanho; i++)
+    {
+        if (filaNodos[i] != NULL)
+        {
+            vetor[k] = filaNodos_aux[i];
+            k++;
+        }
+    }
+    i=0;
+
+    while(FilaTemElementos(filaNodos,filaTamanho))
+    {
+        filaTamanho *= 2;
+        filaNodos_aux = malloc(filaTamanho*sizeof(arvore*));
+        aux = altura;
+        while (aux > 0)
+        {
+            filaNodos_aux[i] = GetNodo(filaNodos[j],0);
+            i++;
+            filaNodos_aux[i] = GetNodo(filaNodos[j],1);
+            i++;
+            j++;
+            aux--;
+        }
+        for (i=0; i<filaTamanho; i++)
+        {
+            if (filaNodos_aux[i] != NULL)
+            {
+                vetor[k] = filaNodos_aux[i];
+                k++;
+            }
+        }
+        free(filaNodos);
+        filaNodos = filaNodos_aux;
+        altura *= 2;
+        i=0;
+        j=0;
+    }
+
+    free(filaNodos);
+    return vetor;
 */
 
 int prefix(struct nodo * raiz, int * resultado){
