@@ -67,7 +67,7 @@ struct nodo * remove_nodo(struct nodo * raiz, int valor){
                 }
             }
         }
-return NULL;
+return raiz;
 }
 
 int altura(struct nodo * raiz){
@@ -144,42 +144,38 @@ return e+d+1;
 }
 
 int abrangencia(struct nodo * raiz, int * resultado){ 
+    int x = 0;
     int *count;
-    int i = 0;
-        count = &i;
-return prefix_count(raiz,resultado,count);
+        count = &x;
+        for(int i = 0; i <= altura(raiz); i++)
+            abrangencia_count(raiz, resultado, count, i);
+return numero_elementos(raiz);
 }
-/* 
-int i = 0;
-    struct fila *f;
-        f = create();
-        if( raiz != NULL){
-            enqueue(f,raiz->valor);
-            while( !vazia(f)){
-                resultado[i] = dequeue(f);
-                printf(" %d\n",resultado[i]);
-                i++;
-                if( raiz->esq != NULL){
-                    node *temp = raiz->esq;
-                    enqueue(f,temp->valor);
-                }
-                if( raiz->dir != NULL){
-                    node *temp = raiz->dir;
-                    enqueue(f,temp->valor);
-                }
+
+void abrangencia_count(struct nodo * raiz, int * resultado, int * count, int andar){
+        if(raiz == NULL)
+            return;
+        if( andar == 1){
+            resultado[*count] = raiz->valor;
+            (*count)++;
+        }
+        else{
+            if( andar > 1){
+                abrangencia_count(raiz->esq, resultado, count, andar-1);
+                abrangencia_count(raiz->dir, resultado, count, andar-1);
             }
         }
-return numero_elementos(raiz);
-*/
+return;
+}
 
 int prefix(struct nodo * raiz, int * resultado){
     int *count;
     int i = 0;
         count = &i;
-return prefix_count(raiz,resultado,count);
+return prefix_count(raiz, resultado, count);
 }
 
-int prefix_count(struct nodo * raiz, int *resultado, int * count){
+int prefix_count(struct nodo * raiz, int * resultado, int * count){
     if(raiz != NULL){
         resultado[*count] = raiz->valor;
         (*count)++;
@@ -193,10 +189,10 @@ int infix(struct nodo * raiz, int * resultado){
     int *count;
     int i = 0;
         count = &i;
-return infix_count(raiz,resultado,count);
+return infix_count(raiz, resultado, count);
 }
 
-int infix_count(struct nodo * raiz, int *resultado, int * count){
+int infix_count(struct nodo * raiz, int * resultado, int * count){
     if(raiz != NULL){
         infix_count(raiz->esq, resultado, count);
         resultado[*count] = raiz->valor;
@@ -210,10 +206,10 @@ int postfix(struct nodo * raiz, int * resultado){
     int *count;
     int i = 0;
         count = &i;
-return postfix_count(raiz,resultado,count);
+return postfix_count(raiz, resultado, count);
 }
 
-int postfix_count(struct nodo * raiz, int *resultado, int * count){
+int postfix_count(struct nodo * raiz, int * resultado, int * count){
     if(raiz != NULL){
         postfix_count(raiz->esq, resultado, count);
         postfix_count(raiz->dir, resultado, count);

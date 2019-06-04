@@ -124,7 +124,7 @@ void test_15_elementos(){
 	THEN("Próxima raiz deve ser menor da subarvore direita (como nos slides)");
 	raiz = inicializa_arvore(15, balanceada);
 	if (raiz){
-		remove_nodo(raiz, 50); // raiz continua sendo no mesmo endereço
+		raiz = remove_nodo(raiz, 50);
 		COMMENT("infix");
 		infix(raiz, caminhamento);
 		imprime(caminhamento, 15);
@@ -206,7 +206,7 @@ void test_7_elementos_linear(){
 
 	raiz = inicializa_arvore(7, naobalanceada);
 	if (raiz){
-		raiz = remove_nodo(raiz, 1); // aqui eu não entendi, mas ok...
+		raiz = remove_nodo(raiz, 1);
 		COMMENT("infix");
 		infix(raiz, caminhamento);
 		imprime(caminhamento, 6);
@@ -240,7 +240,7 @@ void test_remocao(){
 
 	if ((raiz = inicializa_arvore(15, balanceada))){
 		for(int i=1; i<15; i++)
-			remove_nodo(raiz, balanceada[i]); // remover filhos n muda o endereço raiz
+			raiz = remove_nodo(raiz, balanceada[i]);
 		isEqual(altura(raiz), 1, 4);
 		raiz = remove_nodo(raiz, balanceada[0]);
 		isNull(raiz, 1);
