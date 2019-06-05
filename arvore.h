@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "fila.h"
 
 #ifndef _ARVORE_H_
 #define _ARVORE_H_
@@ -26,7 +25,7 @@ struct nodo * inicializa_arvore(int entradas, int * valores);
  */ 
 struct nodo * insere_nodo(struct nodo * raiz, int valor);
 
-/* Remove nodo em uma árvore se existir, dando prioridade à subárvore esquerda para novo nodo raiz
+/* Remove nodo em uma árvore se existir, dando prioridade à subárvore direita(por causa dos testes) para novo nodo raiz
  * @param raiz raiz da árvore
  * @param valor o que será removido 
  * @return raiz da árvore
@@ -70,14 +69,22 @@ int balanceada(struct nodo * raiz);
  */
 int numero_elementos(struct nodo * raiz);
 
-/* Percorre a árvore em abrangência 
+/* Passa os parãmetros pro count por causa do contador 
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
  */
 int abrangencia(struct nodo * raiz, int * resultado);
 
-/* Passa os parãmetros pro interno por causa do contador 
+/* Percorre a árvore em abrangência, guardando o percurso em um vetor 
+ * @param raiz raiz da árvore
+ * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
+ * @param count contador do vetor (já deve estar alocado)
+ * @param andar andar da árvore que será percorrido
+ */
+void abrangencia_count(struct nodo * raiz, int * resultado, int * count, int andar);
+
+/* Passa os parãmetros pro count por causa do contador 
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
@@ -90,9 +97,9 @@ int prefix(struct nodo * raiz, int * resultado);
  * @param count contador do vetor
  * @return número atual de elementos no vetor
  */
-int prefix_count(struct nodo * raiz, int *resultado, int * count);
+int prefix_count(struct nodo * raiz, int * resultado, int * count);
 
-/* Passa os parãmetros pro interno por causa do contador 
+/* Passa os parãmetros pro count por causa do contador 
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
@@ -105,9 +112,9 @@ int postfix(struct nodo * raiz, int * resultado);
  * @param count contador do vetor
  * @return número atual de elementos no vetor
  */
-int postfix_count(struct nodo * raiz, int *resultado, int * count);
+int postfix_count(struct nodo * raiz, int * resultado, int * count);
 
-/* Passa os parãmetros pro interno por causa do contador
+/* Passa os parãmetros pro count por causa do contador
  * @param raiz raiz da árvore
  * @param resultado vetor onde será armazenado o percurso (já deve estar alocado)
  * @return número atual de elementos no vetor
@@ -120,7 +127,7 @@ int infix(struct nodo * raiz, int * resultado);
  * @param count contador do vetor
  * @return número atual de elementos no vetor
  */
-int infix_count(struct nodo * raiz, int *resultado, int * count);
+int infix_count(struct nodo * raiz, int * resultado, int * count);
 
 /* Imprime na stdio os valores de um caminhamento com um espaço entre cada valor, 
  * máximo de 10 valores por linha
