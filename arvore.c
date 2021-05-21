@@ -71,10 +71,10 @@ return raiz;
 }
 
 int altura(struct nodo * raiz){
-    int ae,ad;
         if (raiz == NULL) 
             return 0;
         else{
+	    int ae,ad;
             ae = altura(raiz->esq);
             ad = altura(raiz->dir);
             if(ae < ad) 
